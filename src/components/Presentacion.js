@@ -1,11 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
-const Presentacion = () => {
+const Presentacion = (id, stock, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo) => {
   return (
-    <div>
-      <h2>componente Presentacion</h2>
-    </div>
+    <article className="presentacion">
+      <div className="presentacion-footer">
+        <h3>{producto_tipo + " " + marca_nombre}</h3>
+        <h4>{formato_descripcion + " " + formato_medidas}</h4>
+        <h5>${precio}</h5>
+      </div>
+    </article>
   )
 }
 

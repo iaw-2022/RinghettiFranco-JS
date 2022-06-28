@@ -1,5 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useCallback } from 'react'
+import formatosPre from './datos/formatosPre.js'
+import marcasPre from './datos/marcasPre.js'
+import productosPre from './datos/productosPre.js'
+import presentacionesPre from './datos/presentacionesPre.js'
 
 const URL_PRESENTACIONES = 'http://prlvl-distribuidora.herokuapp.com/api/presentaciones'
 const URL_MARCAS = 'http://prlvl-distribuidora.herokuapp.com/api/marcas'
@@ -13,80 +17,39 @@ const FORMATO_FILTRO = 3
 const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [filterType, setFilterType] = useState(0)
   const [filterTerm, setFilterTerm] = useState(0)
-  const [presentaciones, setPresentaciones] = useState([])
-  const [marcas, setMarcas] = useState([])
-  const [formatos, setFormatos] = useState([])
-  const [productos, setProductos] = useState([])
+  const [presentaciones, setPresentaciones] = useState(presentacionesPre)
+  const [marcas, setMarcas] = useState(marcasPre)
+  const [formatos, setFormatos] = useState(formatosPre)
+  const [productos, setProductos] = useState(productosPre)
 
-  const fetchMarcas = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch(URL_MARCAS)
-      const data = await response.json()
-      setMarcas(data)
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
-    }
-  }
-  useEffect(() => {
-    fetchMarcas()
-  }, [filterTerm])
+  /**
+  const fetchMarcas = fetch(URL_MARCAS);
+  fetchMarcas.then(response => {
+    return response.json();
+  }).then(data => {
+    console.log(data);
+    setMarcas(data);
+  });
 
-  const fetchFormatos = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch(URL_FORMATOS)
-      const data = await response.json()
-      const {datos} = data
-      if(datos){
-        const nuevosFormatos = datos.map((item) => {
-          const {descripcion, unidades, cantidad} = item;
-          return {formato: descripcion + ' ' + cantidad + unidades}
-        })
-        setFormatos(nuevosFormatos)
-      }else{
-        setFormatos([])
-      }
-      setFormatos(data)
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
-    }
-  }
-  useEffect(() => {
-    fetchFormatos()
-  }, [filterTerm])
+  const fetchFormatos = fetch(URL_FORMATOS);
+  fetchFormatos.then(response => {
+    return response.json();
+  }).then(data => {
+    console.log(data);
+    setMarcas(data);
+  });
 
-  const fetchProductos = async () => {
-    try {
-      const response = await fetch(URL_PRODUCTOS)
-      const data = await response.json()
-      setProductos(data)
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-      setLoading(false)
-    }
-  }
-  useEffect(() => {
-    fetchProductos()
-  }, [filterTerm])
-
-  const fetchPresentaciones = async () => {
-    try {
-      const response = await fetch(URL_PRODUCTOS)
-      const data = await response.json()
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  const fetchProductos = fetch(URL_PRODUCTOS);
+  fetchProductos.then(response => {
+    return response.json();
+  }).then(data => {
+    console.log(data);
+    setMarcas(data);
+  });
+  **/
 
   return <AppContext.Provider value={{
     loading,
@@ -95,9 +58,13 @@ const AppProvider = ({ children }) => {
     formatos,
     productos,
     setFilterType,
-    setFilterTerm
+    setFilterTerm,
+    setMarcas,
+    setFormatos,
+    setProductos
   }}>{children}</AppContext.Provider>
 }
+
 // make sure use
 export const useGlobalContext = () => {
   return useContext(AppContext)
