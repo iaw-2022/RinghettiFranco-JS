@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 // import pages
 import Home from './pages/Home'
-import Cart from './pages/Cart'
+import Carrito from './pages/Carrito'
 import Error from './pages/Error'
 
 // import components
@@ -17,8 +17,8 @@ function App() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/cart">
-          <Cart />
+        <Route path="/carrito">
+          <Carrito />
         </Route>
         <Route path="*">
           <Error />

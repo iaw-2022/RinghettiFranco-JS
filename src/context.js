@@ -1,5 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, useReducer } from 'react'
 import { useCallback } from 'react'
+import reducer from './reducer'
 
 const URL_PRESENTACIONES = 'http://prlvl-distribuidora.herokuapp.com/api/presentaciones'
 const URL_MARCAS = 'http://prlvl-distribuidora.herokuapp.com/api/marcas'
@@ -12,6 +13,12 @@ const FORMATO_FILTRO = 3
 
 const AppContext = React.createContext()
 
+const initialCart = {
+  cart:[],
+  total:0,
+  amount:0
+}
+
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState(0)
@@ -20,6 +27,7 @@ const AppProvider = ({ children }) => {
   const [marcas, setMarcas] = useState([])
   const [formatos, setFormatos] = useState([])
   const [productos, setProductos] = useState([])
+  const [state, dispatch] = useReducer(reducer, initialCart)
 
   function obtener(url, filtro) {
     let resultado
@@ -71,17 +79,36 @@ const AppProvider = ({ children }) => {
     setLoading(false);
   }, [filterTerm])
 
+  const clearCart = () => {
+    dispatch({type:'CLEAR_CART'})
+  } 
+
+  const removeItem = (id) => {
+    dispatch({type:'REMOVE_ITEM', payload:id})
+  }
+
+  const increaseItem = (id) => {
+    dispatch({type:'INCREASE_ITEM', payload:{id,cantidad}})
+  }
+
+  const decreaseItem = (id) => {
+    dispatch({type:'DECREASE_ITEM', payload:id})
+  }
+
+  useEffect(() => {
+    dispatch({ type: 'GET_TOTALS'})
+  }, [state.cart])
+
   return <AppContext.Provider value={{
     loading,
     presentaciones,
     marcas,
-    formatos,
-    productos,
-    setFilterType,
+    ...state,
     setFilterTerm,
-    setMarcas,
-    setFormatos,
-    setProductos
+    clearCart,
+    removeItem,
+    increaseItem,
+    decreaseItem,
   }}>{children}</AppContext.Provider>
 }
 
