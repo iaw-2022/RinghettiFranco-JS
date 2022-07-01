@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Presentacion = ({id, stock, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo}) => {
+const Presentacion = ({id, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo}) => {
   return (
     <article className="presentacion">
       <div className="presentacion-footer">

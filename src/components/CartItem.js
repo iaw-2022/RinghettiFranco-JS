@@ -1,7 +1,7 @@
 import React from 'react'
 import { useGlobalContext } from '../context.js'
 
-const CartItem = ({ id, stock, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo, cantidad }) => {
+const CartItem = ({ id, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo, cantidad }) => {
   const { removeItem, increaseItem, decreaseItem } = useGlobalContext()
   return (
     <article className='cart-item'>
