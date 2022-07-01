@@ -21,12 +21,12 @@ const initialCart = {
 
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [filterType, setFilterType] = useState(0)
+  //const [filterType, setFilterType] = useState(0)
   const [filterTerm, setFilterTerm] = useState(0)
   const [presentaciones, setPresentaciones] = useState([])
   const [marcas, setMarcas] = useState([])
-  const [formatos, setFormatos] = useState([])
-  const [productos, setProductos] = useState([])
+  //const [formatos, setFormatos] = useState([])
+  //const [productos, setProductos] = useState([])
   const [state, dispatch] = useReducer(reducer, initialCart)
 
   function obtener(url, filtro) {
@@ -43,14 +43,14 @@ const AppProvider = ({ children }) => {
           resultado = data.marcas
           setMarcas(resultado)
           break
-        case URL_FORMATOS:
+        /*case URL_FORMATOS:
           resultado = data.formatos
           setFormatos(resultado)
           break
         case URL_PRODUCTOS:
           resultado = data.productos
           setProductos(resultado)
-          break
+          break*/
         default:
           resultado = data.presentaciones
           setPresentaciones(resultado)
@@ -61,21 +61,18 @@ const AppProvider = ({ children }) => {
 
   useEffect(() => {
     obtener(URL_MARCAS, '')
-    obtener(URL_FORMATOS, '')
-    obtener(URL_PRODUCTOS, '')
+    //obtener(URL_FORMATOS, '')
+    //obtener(URL_PRODUCTOS, '')
     obtener(URL_PRESENTACIONES, '')
   }, [])
 
   useEffect(() => {
     setLoading(true);
-    //SOLO MARCAS POR AHORA
-    if (filterTerm !== 99) {
+    if (filterTerm !== 'Ninguna') {
       obtener(URL_MARCAS, filterTerm)
     } else {
-      console.log('llego')
       obtener(URL_PRESENTACIONES, '')
     }
-
     setLoading(false);
   }, [filterTerm])
 
@@ -88,16 +85,16 @@ const AppProvider = ({ children }) => {
   }
 
   const increaseItem = (id) => {
-    dispatch({type:'INCREASE_ITEM', payload:{id,cantidad}})
+    dispatch({type:'INCREASE_ITEM', payload:id})
+  }
+
+  const addItem = (item) => {
+    dispatch({type:'ADD_ITEM', payload:{...item}})
   }
 
   const decreaseItem = (id) => {
     dispatch({type:'DECREASE_ITEM', payload:id})
   }
-
-  useEffect(() => {
-    dispatch({ type: 'GET_TOTALS'})
-  }, [state.cart])
 
   return <AppContext.Provider value={{
     loading,
@@ -109,6 +106,7 @@ const AppProvider = ({ children }) => {
     removeItem,
     increaseItem,
     decreaseItem,
+    addItem
   }}>{children}</AppContext.Provider>
 }
 

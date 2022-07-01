@@ -15,12 +15,13 @@ const CartItem = ({ id, precio, formato_descripcion, formato_medidas, marca_nomb
         </button>
       </div>
       <form>
-        <div class="value-button" id="decrease" onclick={decreaseItem(id)} value="Decrease Value">-</div>
-        <input type="number" id="number" value={cantidad} />
-        <div class="value-button" id="increase" onclick={increaseItem(id)} value="Increase Value">+</div>
+        <input type="number" id="number" defaultValue={cantidad} />
+        <div className="value-button" id="increase" onClick={increaseItem(id)}>+</div>
       </form>
     </article>
   )
 }
+
+//<div className="value-button" id="decrease" onClick={decreaseItem(id)}>-</div>
 
 export default CartItem

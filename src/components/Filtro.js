@@ -2,7 +2,7 @@ import React from 'react'
 import { useGlobalContext } from '../context'
 
 const Filtro = () => {
-  const { marcas, productos, formatos, setFilterType, setFilterTerm } = useGlobalContext()
+  const { marcas, setFilterTerm } = useGlobalContext()
 
   const handleChange = (e) => {
     setFilterTerm(e.target.value)
@@ -13,7 +13,7 @@ const Filtro = () => {
       <form className="search-form">
         <label htmlFor="marca">Marca</label>
         <select id="marca" onChange={(e) => handleChange(e)}>
-          <option value="0" defaultValue={0}> Ninguna</option>
+          <option> Ninguna</option>
           {marcas.map((item) => {
             return <option value={item.id}> {item.nombre} </option>
           })}

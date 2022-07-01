@@ -4,6 +4,7 @@ import { useGlobalContext } from '../context.js'
 
 const Carrito = () => {
   const { cart, total, clearCart } = useGlobalContext()
+
   if (cart.length === 0) {
     return (
       <section className='cart'>
@@ -17,17 +18,17 @@ const Carrito = () => {
   }
   return (
     <section className='cart'>
-      { /*cart header*/ }
+      { /*cart header*/}
       <header>
         <h2>Tus compras</h2>
       </header>
-      { /*cart items*/ }
+      { /*cart items*/}
       <div>
         {cart.map((item) => {
-          return <CartItem key={item.id} {...item}/>
+          return <CartItem key={item.id} {...item} />
         })}
       </div>
-      { /*cart footer*/ }
+      { /*cart footer*/}
       <footer>
         <hr />
         <div className='cart-total'>
