@@ -16,7 +16,6 @@ const ListaProducto = () => {
       </h3>
     )
   }
-
   return (
     <section className="section">
       <h2 className="section-title">Productos</h2>

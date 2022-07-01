@@ -13,7 +13,7 @@ const Filtro = () => {
       <form className="search-form">
         <label htmlFor="marca">Marca</label>
         <select id="marca" onChange={(e) => handleChange(e)}>
-          <option value="0" disabled selected> Ninguna</option>
+          <option value="0" defaultValue={0}> Ninguna</option>
           {marcas.map((item) => {
             return <option value={item.id}> {item.nombre} </option>
           })}

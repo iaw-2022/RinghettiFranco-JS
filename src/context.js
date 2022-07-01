@@ -21,57 +21,55 @@ const AppProvider = ({ children }) => {
   const [formatos, setFormatos] = useState([])
   const [productos, setProductos] = useState([])
 
+  function obtener(url, filtro) {
+    let resultado
+    if (filtro) {
+      url = url + '/' + filtro
+    }
+    const busqueda = fetch(url);
+    busqueda.then(response => {
+      return response.json();
+    }).then(data => {
+      switch (url) {
+        case URL_MARCAS:
+          resultado = data.marcas
+          setMarcas(resultado)
+          break
+        case URL_FORMATOS:
+          resultado = data.formatos
+          setFormatos(resultado)
+          break
+        case URL_PRODUCTOS:
+          resultado = data.productos
+          setProductos(resultado)
+          break
+        default:
+          resultado = data.presentaciones
+          setPresentaciones(resultado)
+          break
+      }
+    });
+  }
+
   useEffect(() => {
-    const fetchMarcas = fetch(URL_MARCAS);
-    fetchMarcas.then(response => {
-      return response.json();
-    }).then(data => {
-      const marcasActuales = data.marcas;
-      setMarcas(marcasActuales);
-    });
-
-    const fetchFormatos = fetch(URL_FORMATOS);
-    fetchFormatos.then(response => {
-      return response.json();
-    }).then(data => {
-      const formatosActuales = data.formatos;
-      setFormatos(formatosActuales);
-    });
-
-    const fetchProductos = fetch(URL_PRODUCTOS);
-    fetchProductos.then(response => {
-      return response.json();
-    }).then(data => {
-      const productosActuales = data.productos;
-      setProductos(productosActuales);
-    });
-
-    const fetchPresentaciones = fetch(URL_PRESENTACIONES);
-    fetchPresentaciones.then(response => {
-      return response.json();
-    }).then(data => {
-      const presentacionesActuales = data.presentaciones;
-      setPresentaciones(presentacionesActuales);
-    });
-
-    setLoading(false);
+    obtener(URL_MARCAS, '')
+    obtener(URL_FORMATOS, '')
+    obtener(URL_PRODUCTOS, '')
+    obtener(URL_PRESENTACIONES, '')
   }, [])
 
   useEffect(() => {
     setLoading(true);
     //SOLO MARCAS POR AHORA
-    if(filterTerm !== 0){
-      const fetchPresentacionesFiltradas = fetch(URL_MARCAS+'/'+filterTerm);
-      fetchPresentacionesFiltradas.then(response => {
-        return response.json();
-      }).then(data => {
-        const presentacionesFiltradas = data.presentaciones;
-        setPresentaciones(presentacionesFiltradas);
-      });
+    if (filterTerm !== 99) {
+      obtener(URL_MARCAS, filterTerm)
+    } else {
+      console.log('llego')
+      obtener(URL_PRESENTACIONES, '')
     }
 
     setLoading(false);
-  },[filterTerm])
+  }, [filterTerm])
 
   return <AppContext.Provider value={{
     loading,
