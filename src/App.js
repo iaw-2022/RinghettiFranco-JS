@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 // import pages
 import Home from './pages/Home'
-import Carrito from './pages/Carrito'
 import Error from './pages/Error'
 
 // import components
@@ -16,9 +15,6 @@ function App() {
       <Switch>
         <Route exact path="/">
           <Home />
-        </Route>
-        <Route path="/carrito">
-          <Carrito />
         </Route>
         <Route path="*">
           <Error />

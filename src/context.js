@@ -1,6 +1,4 @@
-import React, { useState, useContext, useEffect, useReducer } from 'react'
-import { useCallback } from 'react'
-import reducer from './reducer'
+import React, { useState, useContext, useEffect } from 'react'
 
 const URL_PRESENTACIONES = 'http://prlvl-distribuidora.herokuapp.com/api/presentaciones'
 const URL_MARCAS = 'http://prlvl-distribuidora.herokuapp.com/api/marcas'
@@ -21,15 +19,14 @@ const initialCart = {
 
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  //const [filterType, setFilterType] = useState(0)
   const [filterTerm, setFilterTerm] = useState(0)
   const [presentaciones, setPresentaciones] = useState([])
   const [marcas, setMarcas] = useState([])
   //const [formatos, setFormatos] = useState([])
   //const [productos, setProductos] = useState([])
-  const [state, dispatch] = useReducer(reducer, initialCart)
 
   function obtener(url, filtro) {
+    setLoading(true)
     let resultado
     if (filtro) {
       url = url + '/' + filtro
@@ -57,6 +54,7 @@ const AppProvider = ({ children }) => {
           break
       }
     });
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -67,46 +65,18 @@ const AppProvider = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    setLoading(true);
     if (filterTerm !== 'Ninguna') {
       obtener(URL_MARCAS, filterTerm)
     } else {
       obtener(URL_PRESENTACIONES, '')
     }
-    setLoading(false);
   }, [filterTerm])
-
-  const clearCart = () => {
-    dispatch({type:'CLEAR_CART'})
-  } 
-
-  const removeItem = (id) => {
-    dispatch({type:'REMOVE_ITEM', payload:id})
-  }
-
-  const increaseItem = (id) => {
-    dispatch({type:'INCREASE_ITEM', payload:id})
-  }
-
-  const addItem = (item) => {
-    dispatch({type:'ADD_ITEM', payload:{...item}})
-  }
-
-  const decreaseItem = (id) => {
-    dispatch({type:'DECREASE_ITEM', payload:id})
-  }
 
   return <AppContext.Provider value={{
     loading,
     presentaciones,
     marcas,
-    ...state,
     setFilterTerm,
-    clearCart,
-    removeItem,
-    increaseItem,
-    decreaseItem,
-    addItem
   }}>{children}</AppContext.Provider>
 }
 

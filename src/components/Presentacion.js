@@ -1,13 +1,25 @@
-import React from 'react'
-import { useGlobalContext } from '../context.js'
+import React, { useState } from 'react';
 import { FaCartPlus } from "react-icons/fa";
 
-const Presentacion = ({id, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo}) => {
-  const { addItem } = useGlobalContext()
+const Presentacion = ({ id, stock, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo }) => {
+  const [cantidad, setCantidad] = useState(0);
 
   const agregarAlCarrito = () => {
-    let item = {id: id, precio: precio, formato_descripcion: formato_descripcion, formato_medidas: formato_medidas, marca_nombre:marca_nombre, producto_tipo: producto_tipo}
-    addItem(item)
+    let item = { id: id, precio: precio, formato_descripcion: formato_descripcion, formato_medidas: formato_medidas, marca_nombre: marca_nombre, producto_tipo: producto_tipo }
+  }
+
+  const handleChange = (e) => {
+    const cant = e.target.value
+    setCantidad(cant)
+  }
+
+  const handleSubmit = (e) => {
+    if (cantidad === 0) return true;
+    if (cantidad > stock) {
+      alert('Lo sentimos, solo poseemos en stock ' + stock + ' ' + producto_tipo + ' ' + marca_nombre)
+      return true;
+    }
+    alert('Comprará ' + cantidad + ' ' + producto_tipo + ' ' + marca_nombre)
   }
 
   return (
@@ -17,9 +29,12 @@ const Presentacion = ({id, precio, formato_descripcion, formato_medidas, marca_n
         <h3>{marca_nombre}</h3>
         <h4>{formato_descripcion + " " + formato_medidas}</h4>
         <h5>${precio}</h5>
-        <button className='btn-primary' onClick={agregarAlCarrito}>
-          <FaCartPlus/>
-        </button>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <input type="number" id="number" min="0" defaultValue={cantidad} onChange={(e) => handleChange(e)} />
+          <button className='btn-primary' onClick={agregarAlCarrito}>
+            <FaCartPlus />
+          </button>
+        </form>
       </div>
     </article>
   )
