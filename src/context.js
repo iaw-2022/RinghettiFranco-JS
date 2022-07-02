@@ -21,7 +21,7 @@ const initialCart = {
 
 const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [filterTerm, setFilterTerm] = useState(0)
+  const [filterTerm, setFilterTerm] = useState('Ninguna')
   const [presentaciones, setPresentaciones] = useState([])
   const [marcas, setMarcas] = useState([])
   //const [formatos, setFormatos] = useState([])
@@ -78,6 +78,7 @@ const AppProvider = ({ children }) => {
     try {
       const response = await axios.post(URL_PEDIDOS, pedido)
       console.log(response.data)
+      setFilterTerm('Ninguna')
     } catch(error){
       console.log(error.response)
     }
