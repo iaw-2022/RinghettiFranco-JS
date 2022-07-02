@@ -4,10 +4,6 @@ import { FaCartPlus } from "react-icons/fa";
 const Presentacion = ({ id, stock, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo }) => {
   const [cantidad, setCantidad] = useState(0);
 
-  const agregarAlCarrito = () => {
-    let item = { id: id, precio: precio, formato_descripcion: formato_descripcion, formato_medidas: formato_medidas, marca_nombre: marca_nombre, producto_tipo: producto_tipo }
-  }
-
   const handleChange = (e) => {
     const cant = e.target.value
     setCantidad(cant)
@@ -31,7 +27,7 @@ const Presentacion = ({ id, stock, precio, formato_descripcion, formato_medidas,
         <h5>${precio}</h5>
         <form onSubmit={(e) => handleSubmit(e)}>
           <input type="number" id="number" min="0" defaultValue={cantidad} onChange={(e) => handleChange(e)} />
-          <button className='btn-primary' onClick={agregarAlCarrito}>
+          <button className='btn-primary'>
             <FaCartPlus />
           </button>
         </form>
