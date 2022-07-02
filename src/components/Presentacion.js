@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { FaCartPlus } from "react-icons/fa";
+import { useGlobalContext } from '../context'
 
 const Presentacion = ({ id, stock, precio, formato_descripcion, formato_medidas, marca_nombre, producto_tipo }) => {
+  const { realizarPedido } = useGlobalContext()
   const [cantidad, setCantidad] = useState(0);
 
   const handleChange = (e) => {
@@ -15,7 +17,12 @@ const Presentacion = ({ id, stock, precio, formato_descripcion, formato_medidas,
       alert('Lo sentimos, solo poseemos en stock ' + stock + ' ' + producto_tipo + ' ' + marca_nombre)
       return true;
     }
+    const pedido = {
+      cliente_id: 1,
+      encargados: [{presentacion_id:id, cantidad:cantidad}]
+    }
     alert('Comprará ' + cantidad + ' ' + producto_tipo + ' ' + marca_nombre)
+    realizarPedido(pedido)
   }
 
   return (

@@ -1,9 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react'
+import axios from 'axios'
 
 const URL_PRESENTACIONES = 'http://prlvl-distribuidora.herokuapp.com/api/presentaciones'
 const URL_MARCAS = 'http://prlvl-distribuidora.herokuapp.com/api/marcas'
 const URL_FORMATOS = 'http://prlvl-distribuidora.herokuapp.com/api/formatos'
 const URL_PRODUCTOS = 'http://prlvl-distribuidora.herokuapp.com/api/productos'
+const URL_PEDIDOS = 'http://prlvl-distribuidora.herokuapp.com/api/pedidos/nuevo'
 const SIN_FILTRO = 0
 const MARCA_FILTRO = 1
 const PRODUCTO_FILTRO = 2
@@ -72,11 +74,21 @@ const AppProvider = ({ children }) => {
     }
   }, [filterTerm])
 
+  const realizarPedido = async (pedido) => {
+    try {
+      const response = await axios.post(URL_PEDIDOS, pedido)
+      console.log(response.data)
+    } catch(error){
+      console.log(error.response)
+    }
+  }
+
   return <AppContext.Provider value={{
     loading,
     presentaciones,
     marcas,
     setFilterTerm,
+    realizarPedido
   }}>{children}</AppContext.Provider>
 }
 
